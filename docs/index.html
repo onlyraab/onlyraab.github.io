@@ -14,6 +14,7 @@
             padding: 0;
         }
         html {
+            background-color: rgba(1, 154, 254, 1);
             height: 100%;
             width: 100%;
         }
@@ -33,19 +34,56 @@
             align-items: center;
             display: flex;
             justify-content: center;
+            flex-direction: column;
             min-height: 100%;
             text-align: center;
+        }
+        article {
+            justify-content: center;
+            align-items: center;
+            display: flex;
+            width: 100%;
         }
         h1 {
             font-size: 8rem;
             font-weight: 700;
             line-height: 1em;
         }
+        footer {
+            background-color: rgb(1, 154, 254);
+            bottom: 0;
+            position: absolute;
+            width: 100%;
+        }
+        a {
+            color: white;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        ul {
+            display: flex;
+            justify-content: space-evenly;
+        }
+        li {
+            display: inline-block;
+            margin: 0 10px;
+        }
     </style>
 </head>
 <body>
-    <header>
+    <article>
         <h1>I had it all.</h1>
-    </header>
+    </article>
+    <footer>
+        <ul>
+            <li><a target="_blank" href="http://electronicsat.net/de/">electronicSat</a></li>
+            <li><a target="_blank" href="https://facebook.com/derraab.music">Facebook</a></li>
+            <li><a target="_blank" href="https://mixcloud.com/derRaab">MixCloud</a></li>
+            <li><a target="_blank" href="https://myspace.com/derraab">MySpace</a></li>
+            <li><a target="_blank" href="https://soundcloud.com/derraab">SoundCloud</a></li>
+        </ul>
+    </footer>
 </body>
 </html>
