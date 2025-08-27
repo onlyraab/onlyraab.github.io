@@ -66,6 +66,7 @@
         a {
             color: white;
             text-decoration: none;
+            position: relative;
         }
         a:hover {
             text-decoration: underline;
@@ -81,6 +82,35 @@
             list-style: none;
             margin: 0 0.3em;
         }
+        .badge::after {
+            content: "";
+            width: 1em;
+            height: 1em;
+            position: absolute;
+            background-color: rgb(255, 225, 0);
+            clip-path: polygon(
+                50.000% 0.000%,
+                56.798% 29.077%,
+                79.389% 9.549%,
+                67.798% 37.069%,
+                97.553% 34.549%,
+                72.000% 50.000%,
+                97.553% 65.451%,
+                67.798% 62.931%,
+                79.389% 90.451%,
+                56.798% 70.923%,
+                50.000% 100.000%,
+                43.202% 70.923%,
+                20.611% 90.451%,
+                32.202% 62.931%,
+                2.447% 65.451%,
+                28.000% 50.000%,
+                2.447% 34.549%,
+                32.202% 37.069%,
+                20.611% 9.549%,
+                43.202% 29.077%
+            );
+        }
     </style>
 </head>
 <body>
@@ -89,12 +119,12 @@
     </article>
     <footer>
         <ul>
-            <li><a target="_blank" href="http://electronicsat.net/de/">electronicSat</a></li>
-            <li><a target="_blank" href="https://facebook.com/derraab.music">Facebook</a></li>
-            <li><a target="_blank" href="https://mixcloud.com/derraab">MixCloud</a></li>
-            <li><a target="_blank" href="https://myspace.com/derraab">MySpace</a></li>
-            <li><a target="_blank" href="https://ra.co/dj/derraab">RA</a></li>
-            <li><a target="_blank" href="https://soundcloud.com/derraab">SoundCloud</a></li>
+            <li><a target="_blank" href="http://electronicsat.net/de/" title="electronicSat was our music and party project founded in 1998. Still up as an archive.">electronicSat</a></li>
+            <li><a target="_blank" href="https://facebook.com/derraab.music" title="I sometimes update my facebook page.">Facebook</a></li>
+            <li><a target="_blank" href="https://mixcloud.com/derraab" title="Mixcloud holds some of my old DJ mixes.">MixCloud</a></li>
+            <li><a target="_blank" href="https://myspace.com/derraab" title="I still have my profile for sentimental reasons.">MySpace</a></li>
+            <li><a target="_blank" href="https://ra.co/dj/derraab" title="Resident Advisor profile.">Resident Advisor</a></li>
+            <li><a target="_blank" href="https://soundcloud.com/derraab" title="SoundCloud profile will have the most recent mixes." class="badge">SoundCloud</a></li>
         </ul>
     </footer>
 </body>
