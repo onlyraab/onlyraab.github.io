@@ -1,63 +1,45 @@
-// Main LESS entry point
-@primary-color: #333;
-@secondary-color: #666;
-@background-color: #f5f5f5;
-@border-radius: 4px;
 
-// Mixins
-.border-radius(@radius: @border-radius) {
-  border-radius: @radius;
+a:hover {
+  text-decoration: underline;
 }
 
-.box-shadow(@shadow: 0 2px 4px rgba(0, 0, 0, 0.1)) {
-  box-shadow: @shadow;
+ul {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  margin: 0.3em 0;
 }
 
-// Example styles for your website
-body {
-  font-family: Arial, sans-serif;
-  color: @primary-color;
-  background-color: @background-color;
-  margin: 0;
-  padding: 20px;
-  
-  &.ts-loaded {
-    // Styles when TypeScript has loaded
-    background-color: lighten(@background-color, 2%);
-  }
+li {
+  display: inline-block;
+  list-style: none;
+  margin: 0 0.3em;
 }
 
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
-  
-  .header {
-    background: white;
-    padding: 20px;
-    .border-radius();
-    .box-shadow();
-    margin-bottom: 20px;
-    
-    h1 {
-      color: @primary-color;
-      margin: 0;
-      font-size: 2rem;
-    }
-  }
-}
-
-// Media queries
-@media (max-width: 768px) {
-  .container {
-    padding: 0 10px;
-    
-    .header {
-      padding: 15px;
-      
-      h1 {
-        font-size: 1.5rem;
-      }
-    }
-  }
+.badge::after {
+  content: "";
+  width: 1em;
+  height: 1em;
+  position: absolute;
+  background-color: rgb(255, 225, 0);
+  clip-path: polygon(50.000% 0.000%,
+      56.798% 29.077%,
+      79.389% 9.549%,
+      67.798% 37.069%,
+      97.553% 34.549%,
+      72.000% 50.000%,
+      97.553% 65.451%,
+      67.798% 62.931%,
+      79.389% 90.451%,
+      56.798% 70.923%,
+      50.000% 100.000%,
+      43.202% 70.923%,
+      20.611% 90.451%,
+      32.202% 62.931%,
+      2.447% 65.451%,
+      28.000% 50.000%,
+      2.447% 34.549%,
+      32.202% 37.069%,
+      20.611% 9.549%,
+      43.202% 29.077%);
 }
