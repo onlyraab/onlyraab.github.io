@@ -8,7 +8,7 @@ function greet(name: string): string {
 
 // Example of using the function
 document.addEventListener('DOMContentLoaded', () => {
-    const message = greet('Only Raab 3');
+    const message = greet('Only Raab 334d4');
     console.log(message);
     
     // You can add your main application logic here

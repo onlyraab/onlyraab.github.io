@@ -4,12 +4,13 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --open /docs/",
-    "build": "tsc && vite build",
-    "build:watch": "vite build --watch",
+    "dev": "vite",
+    "build": "tsc && vite build --mode production",
+    "build:dev": "tsc && vite build --mode development",
+    "build:watch": "vite build --watch --mode development",
     "preview": "vite preview",
     "start": "concurrently \"npm run build:watch\" \"npm run dev\" --names \"BUILD,SERVER\" --prefix-colors \"blue,green\"",
-    "dev:full": "npm run build && npm run start"
+    "dev:full": "npm run build:dev && npm run start"
   },
   "devDependencies": {
     "@types/node": "^24.8.1",

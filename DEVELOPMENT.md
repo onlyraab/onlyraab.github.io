@@ -25,27 +25,39 @@ This project uses Vite to build TypeScript files and serve them with auto-reload
 npm run start
 ```
 This command will:
-1. Build your TypeScript files and watch for changes
+1. Build your TypeScript files in development mode (unminified) and watch for changes
 2. Start a development server with auto-reload
 3. Open your browser to `http://localhost:3000/docs/`
 
-### Build Only
+### Production Build (Minified)
 ```bash
 npm run build
 ```
-Builds the TypeScript file once to `docs/index.js`
+Builds the TypeScript file once to `docs/index.js` with minification and no source maps
+
+### Development Build (Unminified)
+```bash
+npm run build:dev
+```
+Builds the TypeScript file once to `docs/index.js` without minification and with source maps
 
 ### Build with Watch Mode
 ```bash
 npm run build:watch
 ```
-Builds and watches for changes to rebuild automatically
+Builds in development mode (unminified) and watches for changes to rebuild automatically
 
 ### Development Server Only
 ```bash
 npm run dev
 ```
 Starts the Vite development server
+
+### Full Development Setup
+```bash
+npm run dev:full
+```
+Builds in development mode first, then starts the full development environment
 
 ## How It Works
 

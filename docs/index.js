@@ -1,14 +1,13 @@
 console.log("Hello from TypeScript!");
-function t(e) {
-  return `Hello, ${e}!`;
+function greet(name) {
+  return `Hello, ${name}!`;
 }
 document.addEventListener("DOMContentLoaded", () => {
-  const e = t("Only Raab 3");
-  console.log(e);
-  const o = document.body;
-  o && o.setAttribute("data-ts-loaded", "true");
+  const message = greet("Only Raab 334d4");
+  console.log(message);
+  const body = document.body;
+  if (body) {
+    body.setAttribute("data-ts-loaded", "true");
+  }
 });
-export {
-  t as greet
-};
 //# sourceMappingURL=index.js.map

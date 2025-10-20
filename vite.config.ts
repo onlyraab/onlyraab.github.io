@@ -1,43 +1,38 @@
 import { defineConfig } from 'vite'
 
-export default defineConfig({
-  // Build configuration
-  build: {
-    // Output directory
-    outDir: 'docs',
-    // Don't clear the docs directory (preserve existing files like index.html)
-    emptyOutDir: false,
-    lib: {
-      entry: 'src/ts/index.ts',
-      name: 'OnlyRaab',
-      fileName: () => 'index.js',
-      formats: ['es']
+export default defineConfig(({ command, mode }) => {
+  const isProduction = mode === 'production'
+  const isServing = command === 'serve'
+
+  if (isServing) {
+    // Development server mode - serve from docs directory
+    return {
+      root: 'docs',
+      server: {
+        open: true,
+        port: 3000
+      },
+      publicDir: false
+    }
+  }
+
+  // Build mode - standard web application build
+  return {
+    build: {
+      outDir: 'docs',
+      emptyOutDir: false,
+      rollupOptions: {
+        input: 'src/ts/index.ts',
+        output: {
+          entryFileNames: 'index.js',
+          format: 'es',
+          inlineDynamicImports: true
+        }
+      },
+      minify: isProduction,
+      sourcemap: !isProduction,
+      target: 'es2015'
     },
-    rollupOptions: {
-      output: {
-        // Ensure we get a single file
-        inlineDynamicImports: true
-      }
-    },
-    // Generate source maps for debugging
-    sourcemap: true,
-    // Target modern browsers
-    target: 'es2015'
-  },
-  
-  // Development server configuration for serving the docs folder
-  server: {
-    // Serve the docs directory
-    fs: {
-      allow: ['..']
-    },
-    // Auto-open browser
-    open: '/docs/',
-    // Hot reload
-    hmr: true,
-    port: 3000
-  },
-  
-  // Public directory
-  publicDir: 'docs'
+    publicDir: false
+  }
 })
