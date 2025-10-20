@@ -13,6 +13,13 @@
     "isolatedModules": true,
     "noEmit": true,
 
+    /* Path mapping */
+    "baseUrl": ".",
+    "paths": {
+      "@mokick/core/*": ["src/mokick-core/*"],
+      "@mokick/core": ["src/mokick-core/index"]
+    },
+
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,

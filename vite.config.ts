@@ -10,9 +10,18 @@ export default defineConfig(({ command, mode }) => {
       root: 'docs',
       server: {
         open: true,
-        port: 3000
+        port: 3000,
+        fs: {
+          // Allow serving files from outside the root directory
+          allow: ['..', '../..']
+        }
       },
-      publicDir: false
+      publicDir: false,
+      resolve: {
+        alias: {
+          '@mokick/core': '/src/mokick-core'
+        }
+      }
     }
   }
 
@@ -40,6 +49,11 @@ export default defineConfig(({ command, mode }) => {
       target: 'es2015'
     },
     publicDir: false,
+    resolve: {
+      alias: {
+        '@mokick/core': '/src/mokick-core'
+      }
+    },
     css: {
       preprocessorOptions: {
         less: {

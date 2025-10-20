@@ -4,3 +4,7 @@
 !data/data/flyer
 !data/data/mokick-graph.json
 node_modules
+
+# MOKICK core symlink
+src/mokick-core/
+src/mokick-core
