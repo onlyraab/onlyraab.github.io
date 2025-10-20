@@ -25,6 +25,12 @@ export default defineConfig(({ command, mode }) => {
         input: 'src/ts/index.ts',
         output: {
           entryFileNames: 'index.js',
+          assetFileNames: (assetInfo) => {
+            if (assetInfo.name?.endsWith('.css')) {
+              return 'index.css'
+            }
+            return '[name].[ext]'
+          },
           format: 'es',
           inlineDynamicImports: true
         }
@@ -33,6 +39,13 @@ export default defineConfig(({ command, mode }) => {
       sourcemap: !isProduction,
       target: 'es2015'
     },
-    publicDir: false
+    publicDir: false,
+    css: {
+      preprocessorOptions: {
+        less: {
+          // Add any LESS options here if needed
+        }
+      }
+    }
   }
 })

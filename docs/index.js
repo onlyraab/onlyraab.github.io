@@ -1,3 +1,4 @@
+const index = "";
 console.log("Hello from TypeScript!");
 function greet(name) {
   return `Hello, ${name}!`;
