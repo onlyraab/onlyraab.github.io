@@ -1,0 +1,20 @@
+{
+  "name": "onlyraab-website",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --open /docs/",
+    "build": "tsc && vite build",
+    "build:watch": "vite build --watch",
+    "preview": "vite preview",
+    "start": "concurrently \"npm run build:watch\" \"npm run dev\" --names \"BUILD,SERVER\" --prefix-colors \"blue,green\"",
+    "dev:full": "npm run build && npm run start"
+  },
+  "devDependencies": {
+    "@types/node": "^24.8.1",
+    "concurrently": "^9.2.1",
+    "typescript": "^5.0.2",
+    "vite": "^4.4.5"
+  }
+}

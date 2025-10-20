@@ -3,3 +3,4 @@
 /data/data/*
 !data/data/flyer
 !data/data/mokick-graph.json
+node_modules
