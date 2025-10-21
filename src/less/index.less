@@ -1,6 +1,7 @@
 :root {
-  --blue: rgb(1, 154, 254);
-  --yellow: rgb(255, 225, 0);
+  --surface: hsl(320, 100%, 70%);
+  --on-surface: hsl(0, 0%, 0%);
+  --accent: hsl(60, 100%, 60%);
 }
 
 * {
@@ -9,12 +10,12 @@
   padding: 0;
 }
 html {
-  background-color: var(--blue);
+  background-color: var(--surface);
   width: 100%;
 }
 body {
 
-  color: white;
+  color: var(--on-surface);
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
     "Segoe UI Symbol";
@@ -29,6 +30,7 @@ body {
   text-align: center;
 }
 header {
+  color: var(--accent);
   position: relative;
   background-image: 
     linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
@@ -70,14 +72,14 @@ h1 {
 }
 
 footer {
-  background-color: var(--blue);
+  background-color: var(--surface);
   top: 0;
   position: fixed;
   width: 100%;
   padding-bottom: env(safe-area-inset-bottom);
 }
 a {
-  color: white;
+  color: var(--on-surface);
   text-decoration: none;
   position: relative;
 }
