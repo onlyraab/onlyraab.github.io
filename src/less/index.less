@@ -30,7 +30,9 @@ body {
 }
 header {
   position: relative;
-  background-image: url("img/background.jpg");
+  background-image: 
+    linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+    url("img/background.jpg");
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -50,6 +52,9 @@ header {
   display: flex;
   flex-direction: column;
   width: 100%;
+
+  text-wrap: balance;
+  padding: 1em;
 }
 article {
   justify-content: center;
@@ -63,6 +68,7 @@ h1 {
   font-weight: 700;
   line-height: 1em;
 }
+
 footer {
   background-color: var(--blue);
   top: 0;
@@ -120,7 +126,7 @@ li {
 }
 
 p {
-  margin: 1em;
+  padding: 1em;
 }
 
 .dates {
@@ -133,6 +139,7 @@ p {
     display: inline;
     margin: 0;
     padding: 0;
+    text-wrap: unset;
   }
   h3 {
     margin-right: 0.5em;
