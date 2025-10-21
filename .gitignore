@@ -8,3 +8,4 @@ node_modules
 # MOKICK core symlink
 src/mokick-core/
 src/mokick-core
+docs/index.js.map
