@@ -1,0 +1,24 @@
+# Browsers that we support
+
+# Modern browsers
+last 2 versions
+
+# iOS Safari - critical for mobile support
+iOS >= 12
+Safari >= 12
+
+# Android browsers
+Android >= 6
+ChromeAndroid >= 64
+
+# Desktop browsers
+Chrome >= 64
+Firefox >= 60
+Edge >= 16
+
+# Market share and maintenance
+> 1%
+not dead
+
+# Avoid really old browsers
+not IE 11

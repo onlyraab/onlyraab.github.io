@@ -31,12 +31,20 @@ body {
 header {
   position: relative;
   background-image: url("img/background.jpg");
-  background-position: center;
+  background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
-  background-attachment: fixed;
+  /* Removed background-attachment: fixed - causes issues on iOS Safari */
+  
+  /* iOS Safari specific fixes */
+  -webkit-background-size: cover;
+  -webkit-transform: translate3d(0, 0, 0); /* Force hardware acceleration */
+  transform: translate3d(0, 0, 0);
 
   height: 90vh;
+  /* iOS Safari viewport height fix */
+  min-height: 90vh;
+  
   justify-content: center;
   align-items: center;
   display: flex;
@@ -115,6 +123,7 @@ li {
   padding: 1em;
   text-align: left;
   width: 100%;
+  overflow: hidden;
 
   h3, h4, h5, p, ul, li {
     display: inline;
