@@ -32,8 +32,9 @@ body {
 header {
   color: var(--accent);
   position: relative;
+  background-color: var(--on-surface);
   background-image: 
-    linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+    linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.3)),
     url("img/background.jpg");
   background-position: center center;
   background-repeat: no-repeat;
@@ -57,6 +58,10 @@ header {
 
   text-wrap: balance;
   padding: 1em;
+
+  h2 {
+    max-width: 40em;
+  }
 }
 article {
   justify-content: center;
@@ -64,6 +69,10 @@ article {
   display: flex;
   flex-direction: column;
   width: 100%;
+
+  a {
+    text-decoration: underline;
+  }
 }
 h1 {
   font-size: 8rem;
