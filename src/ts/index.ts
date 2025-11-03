@@ -3,6 +3,7 @@
 // Import LESS styles
 import '../less/index.less';
 
+/*
 import { legacyParser } from '@mokick/core/legacy/parser';
 import { edgesOutFilter, edgesOutForEach } from '@mokick/core/lists/edgesOutList';
 import { Edge } from '@mokick/core/types/Edge';
@@ -106,9 +107,9 @@ const createDatesSection = () => {
 
     return datesSection;
 }
-
 // Example of using the function
 document.addEventListener('DOMContentLoaded', () => {
     document.body.querySelector('article')!.appendChild(createDatesSection());
 });
 
+*/
