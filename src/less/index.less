@@ -171,7 +171,7 @@ p {
     content: ""; /* no comma at the end */
     margin-right: 0.5em;
   }
-
+ 
   ul {
     display: inline;
     list-style: none;
@@ -180,4 +180,21 @@ p {
 
 .date {
   display: inline;
+
+  &.future {
+    background-color: var(--accent);
+    font-size: 1.5em;
+  }
+}
+
+.scroll-down {
+    display: none;
+}
+
+.has-future {
+  .scroll-down {
+    position: absolute;
+    bottom: 1em;
+    display: block;
+  }
 }

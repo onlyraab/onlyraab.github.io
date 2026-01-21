@@ -6,6 +6,9 @@ import { Edge } from '@mokick/core/types/Edge';
 import { StringNode } from '@mokick/core/types/StringNode';
 import legacyMokickGraph from '../../data/data/mokick-graph.json';
 
+const ddMmYyyyRegex = /^(\d{2})\.(\d{2})\.(\d{4})$/;
+const dataTimestamp = 'data-timestamp=""'
+
 const createDateDiv = (edge: Edge) => {
     let html = '';
 
@@ -20,7 +23,9 @@ const createDateDiv = (edge: Edge) => {
         return html;
     }
 
-    html += '<div class="date">';
+    html += '<div class="date" ' + dataTimestamp + '>';
+
+    let date = 0;
 
     edgesOutForEach(textContentEdges[0].nodeOut!, (e: Edge) => {
         const slug = e.slug!;
@@ -31,8 +36,22 @@ const createDateDiv = (edge: Edge) => {
         }
         else if (slug.startsWith("h-")) {
 
+            const valueString = (e.nodeOut! as StringNode).valueString;
+
+            if (date === 0) {
+                const match = valueString.match(ddMmYyyyRegex);
+                if (match) {
+                    const [, dd, mm, yyyy] = match;
+                    const time = new Date(parseInt(yyyy), parseInt(mm) - 1, parseInt(dd)).getTime();
+                    
+                    if (0 < time) {
+                        date = time;
+                    }
+                }
+            }
+        
             let h = slug === "h-0" ? "h3" : slug === "h-1" ? "h4" : "h5";
-            html += '<' + h + '>' + (e.nodeOut! as StringNode).valueString + '</' + h + '>'
+            html += '<' + h + '>' + valueString + '</' + h + '>'
         }
         else if (slug.startsWith("list-")) {
 
@@ -44,6 +63,10 @@ const createDateDiv = (edge: Edge) => {
             html += '</ul>';
         }
     });
+
+    if (0 < date) {
+        html = html.replace(dataTimestamp, 'data-timestamp="' + date.toString() + '"');
+    }
 
     html += '</div>';
 

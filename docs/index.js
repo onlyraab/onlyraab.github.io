@@ -1,1 +1,1 @@
-
+let i=!1;const l=24*60*60*1e3,o=Date.now(),n=o-l,a=Array.from(document.querySelectorAll('div.date[data-timestamp]:not([data-timestamp=""])'));for(let t=0;t<a.length;t++){const e=a[t],d=e.getAttribute("data-timestamp"),s=parseInt(d);if(isNaN(s)||s<n)break;i=!0,e.classList.add("future")}i&&document.body.classList.add("has-future");
