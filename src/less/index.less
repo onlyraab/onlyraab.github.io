@@ -71,9 +71,14 @@ article {
   width: 100%;
 
   a {
-    text-decoration: underline;
+    font-weight: bolder;
+    &.date {
+      font-weight: unset;
+    }
   }
 }
+
+
 h1 {
   font-size: 8rem;
   font-weight: 700;
@@ -187,14 +192,32 @@ p {
   }
 }
 
+.body--date {
+  .date {
+    background-color: var(--accent);
+    font-size: 1.5em;
+  
+  }
+}
+
 .scroll-down {
+    position: absolute;
+    bottom: 1em;
     display: none;
 }
 
 .has-future {
   .scroll-down {
-    position: absolute;
-    bottom: 1em;
     display: block;
   }
+}
+
+.body--date {
+  .scroll-down {
+    display: block;
+  }
+}
+
+.h1--date {
+  float: left;
 }
