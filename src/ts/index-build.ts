@@ -61,8 +61,10 @@ const createDateDiv = (edge: Edge) => {
                 const match = valueString.match(ddMmYyyyRegex);
                 if (match) {
                     const [, dd, mm, yyyy] = match;
-                    const timestamp = new Date(parseInt(yyyy), parseInt(mm) - 1, parseInt(dd)).getTime();
-                    
+                    var timestampDate = new Date();
+                        timestampDate.setUTCFullYear(parseInt(yyyy), parseInt(mm) - 1, parseInt(dd));
+                    const timestamp = timestampDate.getTime();
+
                     if (0 < timestamp) {
                         dateTimestamp = timestamp;
                     }
