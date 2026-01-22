@@ -256,3 +256,28 @@ const createNewDateFields = async () => {
     }
 }
 await createNewDateFields();
+
+const sitemapUrls = ["index.html"];
+dateEntries.forEach((entry) => {
+    sitemapUrls.push(entry.url);
+});
+
+
+    console.log('Sitemap URLs count: ' + sitemapUrls.length);
+
+const createSitemap = async () => {
+    let sitemapXml = '<?xml version="1.0" encoding="UTF-8"?>\n';
+    sitemapXml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
+
+    const baseUrl = 'https://onlyraab.com/';
+
+    sitemapUrls.forEach((url) => {
+        sitemapXml += ' <url><loc>' + baseUrl + url + '</loc></url>\n';
+    });
+
+    sitemapXml += '</urlset>\n';
+
+    await Bun.write('docs/sitemap.xml', sitemapXml);
+}
+
+await createSitemap();
