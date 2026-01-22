@@ -9,7 +9,7 @@ const dayMills = 24 * 60 * 60 * 1000;
 const nowMills = Date.now();
 const thresholdMills = nowMills - dayMills;
 
-const dateDivs: HTMLElement[] = Array.from(document.querySelectorAll('div.date[data-timestamp]:not([data-timestamp=""])'));
+const dateDivs: HTMLElement[] = Array.from(document.querySelectorAll('a.date[data-timestamp]:not([data-timestamp=""])'));
 for (let i = 0; i < dateDivs.length; i++) {
     const dateDiv = dateDivs[i];
     const timestampStr = dateDiv.getAttribute('data-timestamp')!;
