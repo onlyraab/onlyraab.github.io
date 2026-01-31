@@ -8,7 +8,7 @@ import { readdir } from "node:fs/promises";
 import legacyMokickGraph from '../../data/data/mokick-graph.json';
 
 const ddMmYyyyRegex = /^(\d{2})\.(\d{2})\.(\d{4})$/;
-const dataTimestamp = 'data-timestamp=""'
+const dataIsoDateAttributeName = 'data-iso-date'
 
 const dateDivMap = new Map<string, string[]>();
 const dateOrder: string[] = [];
@@ -39,9 +39,9 @@ const createDateDiv = (edge: Edge) => {
         return html;
     }
 
-    html += '<div class="date" ' + dataTimestamp + '>';
+    html += '<div class="date" ' + dataIsoDateAttributeName + '="">';
 
-    let dateTimestamp = 0;
+    let dateIsoString = "";
     let dateTitle = "";
     const keywords: string[] = [];
 
@@ -57,16 +57,16 @@ const createDateDiv = (edge: Edge) => {
 
             const valueString = (e.nodeOut! as StringNode).valueString;
 
-            if (dateTimestamp === 0) {
+            if (dateIsoString === "") {
                 const match = valueString.match(ddMmYyyyRegex);
                 if (match) {
                     const [, dd, mm, yyyy] = match;
                     var timestampDate = new Date();
                         timestampDate.setUTCFullYear(parseInt(yyyy), parseInt(mm) - 1, parseInt(dd));
-                    const timestamp = timestampDate.getTime();
 
+                    const timestamp = timestampDate.getTime();
                     if (0 < timestamp) {
-                        dateTimestamp = timestamp;
+                        dateIsoString = timestampDate.toISOString().substring(0, 10);
                     }
                 }
             }
@@ -90,18 +90,15 @@ const createDateDiv = (edge: Edge) => {
         }
     });
 
-    const hasDate = 0 < dateTimestamp;
+    const hasDate = dateIsoString !== "";
     if (hasDate) {
-        html = html.replace(dataTimestamp, 'data-timestamp="' + dateTimestamp.toString() + '"');
+        html = html.replace(dataIsoDateAttributeName + '=""', dataIsoDateAttributeName +'="' + dateIsoString + '"');
     }
 
     html += '</div>';
 
     if (hasDate) {
-        const dateTmp = new Date(dateTimestamp);
-        const dateString = dateTmp.getUTCFullYear() + '-' +
-            String(dateTmp.getUTCMonth() + 1).padStart(2, '0') + '-' +
-            String(dateTmp.getUTCDate()).padStart(2, '0');
+        const dateString = dateIsoString;
         if (!dateDivMap.has(dateString)) {
             dateDivMap.set(dateString, []);
             dateOrder.push(dateString);
