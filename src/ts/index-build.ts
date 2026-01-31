@@ -270,9 +270,13 @@ const createSitemap = async () => {
     sitemapXml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
 
     const baseUrl = 'https://onlyraab.com/';
+    const lastModified = new Date().toISOString().substring(0, 10);
 
     sitemapUrls.forEach((url) => {
-        sitemapXml += ' <url><loc>' + baseUrl + url + '</loc></url>\n';
+        sitemapXml += '\t<url>\n';
+        sitemapXml += '\t\t<loc>' + baseUrl + url + '</loc>\n';
+        sitemapXml += '\t\t<lastmod>' + lastModified + '</lastmod>\n';
+        sitemapXml += '\t</url>\n';
     });
 
     sitemapXml += '</urlset>\n';
