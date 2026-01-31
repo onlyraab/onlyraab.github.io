@@ -240,6 +240,7 @@ const createNewDateFields = async () => {
         updatedDateHtml = updatedDateHtml.split('<!--DATE-->').join(dateHuman);
         updatedDateHtml = updatedDateHtml.split('<!--DATE_SPANS-->').join(dateHumanToSpans(dateHuman));
         updatedDateHtml = updatedDateHtml.split('<!--TITLE-->').join(entry.title);
+        updatedDateHtml = updatedDateHtml.split('<!--URL-->').join(entry.url);
         updatedDateHtml = updatedDateHtml.split('<!--KEYWORDS-->').join(entry.keywords.join(', '));
 
         const previousEntry = i > 0 ? dateEntries[i - 1] : null;
