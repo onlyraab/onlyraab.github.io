@@ -6,7 +6,7 @@ import { Edge } from '@mokick/core/types/Edge';
 import { StringNode } from '@mokick/core/types/StringNode';
 import { readdir } from "node:fs/promises";
 import legacyMokickGraph from '../../data/data/mokick-graph.json';
-import { generateDateSocialImage } from './og/image-generate';
+import { generateAllDateSocialImages } from './og/image-generate';
 import { DateEntry } from './types/DateEntry';
 
 const ddMmYyyyRegex = /^(\d{2})\.(\d{2})\.(\d{4})$/;
@@ -192,6 +192,9 @@ const createIndexDatesSection = () => {
 collectDateEntries();
 
 console.log('Total date entries: ' + dateEntries.length);
+
+await generateAllDateSocialImages(dateEntries);
+
 
 const indexHtml = await Bun.file('src/html/index.html').text();
 const updatedIndexHtml = indexHtml.replace('<!--ARTICLE_DATA-->', createIndexDatesSection());

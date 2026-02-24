@@ -1,4 +1,8 @@
-// og-component.tsx
+
+
+import { ImageResponse } from "@vercel/og";
+import { mkdir, readFile, writeFile } from "fs/promises";
+import { DateEntry } from "../types/DateEntry";
 
 const fullImageWidth = 1200;
 const fullImageHeight = 630;
@@ -13,6 +17,16 @@ const black = "#000";
 const backgroundColors = [yellow, pink] as const;
 const onBackgroundColors = [black, black] as const;
 const colorCount = backgroundColors.length;
+
+
+let _interFont: Buffer<ArrayBufferLike> | null = null;
+
+const getInterFont = async () => {
+  if (!_interFont) {
+    _interFont = await readFile("src/fonts/Inter/Inter-VariableFont_opsz,wght.ttf");
+  }
+  return _interFont;
+}
 
 const ImageChar = ({ char, colorIndex }: { char: string, colorIndex: number }) => {
   const index = colorIndex % colorCount;
@@ -56,7 +70,6 @@ const ImageElements = ( {left, top, width, height, colorIndex}: {left: number, t
 
   const isPortrait = height > width;
   if ((!isPortrait && width < minSize) || (isPortrait && height < minSize)) {
-    console.log(width, height, colorIndex, isPortrait);
     return null;
   }
 
@@ -159,7 +172,121 @@ const ImageLines = () => {
   </div>);
 }
 
-export const ImageOg = ({ title }: { title: string }) => {
+const renderSentence = (sentence: string, color: string, backgroundColor: string) => {
+  const elements = [];
+
+  const words = sentence.split(" ");
+  for (let i = 0; i < words.length; i++) {
+    const word = words[i];
+    if (word.trim() === "") {
+      continue;
+    }
+
+    elements.push(
+      <span key={i} style={{color, backgroundColor}}>{word}</span>
+    );
+    if ( i < words.length - 1) {
+      elements.push(
+        <span key={i}>{"\u00A0"}</span>
+      );
+    }
+  }
+
+  return <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>{elements}</div>;
+}
+
+const ImageText = ({ title, dateHuman, keywords }: { title: string, dateHuman: string, keywords: string[] }) => {
+  const keywordsText = keywords.join(", ");
+
+  const dateFontSize = 48
+
+  let titleFontSize = 56;
+  if (title.length > 40) {
+    titleFontSize = 48;
+  }
+
+  let keywordsFontSize = 32;
+  if (keywordsText.length > 100) {
+    keywordsFontSize = 30;
+  }
+  if (keywordsText.length > 150) {
+    keywordsFontSize = 28;
+  }
+  if (keywordsText.length > 200) {
+    keywordsFontSize = 26;
+  }
+  if (keywordsText.length > 250) {
+    keywordsFontSize = 24;
+  }
+  if (keywordsText.length > 300) {
+    keywordsFontSize = 22;
+  }
+  if (keywordsText.length > 350) {
+    keywordsFontSize = 20;
+  }
+  if (keywordsText.length > 400) {
+    keywordsFontSize = 18;
+  }
+  if (keywordsText.length > 450) {
+    keywordsFontSize = 16;
+  }
+  if (keywordsText.length > 500) {
+    keywordsFontSize = 14;
+  }
+
+
+  return (
+  <div
+    style={{
+      width: `${squareImageWidth}px`,
+      height: `${squareImageHeight}px`,
+      position: "absolute",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+    }}
+    >
+    
+    <div
+      style={{
+        display: "flex",
+        fontSize: dateFontSize,
+        fontWeight: "bold",
+        justifyContent: "flex-end",
+      }}
+      >
+      {renderSentence(dateHuman, pink, yellow)}
+    </div>
+    
+    <div
+      style={{
+        paddingTop: `${gap}px`,
+        display: "flex",
+        color: yellow,
+        textAlign: "center",
+        fontSize: titleFontSize,
+        fontWeight: "bold",
+      }}
+      >
+      {renderSentence(title.toUpperCase(), yellow, pink)}
+    </div>
+
+    <div
+      style={{
+        paddingTop: `${gap}px`,
+        display: "flex",
+        color: "black",
+        fontSize: keywordsFontSize,
+        fontWeight: "bold",}}
+      >
+      {renderSentence(keywordsText, pink, yellow)}
+    </div>
+
+  </div>);
+}
+
+export const ImageOg = ({ title, dateHuman, keywords }: { title: string, dateHuman: string, keywords: string[] }) => {
   return (
     <div
       style={{
@@ -171,31 +298,29 @@ export const ImageOg = ({ title }: { title: string }) => {
         backgroundColor: "black",
         color: "white",
         fontSize: 64,
+        flexDirection: "column",
       }}
     >
-      {/*<ImageElements left={0} top={0} width={paddingImageWidth} height={fullImageHeight} colorIndex={0} />*/}
-      {/*<ImageElements left={squareImageRight} top={0} width={paddingImageWidth} height={fullImageHeight} colorIndex={0} />*/}
-      {/*<ImageElements left={squareImageLeft - gap} top={0} width={squareImageWidth + gap * 2} height={fullImageHeight} colorIndex={0} />*/}
       <ImageLines/>
-      {title.split("").map((char, index) => (
-        <ImageChar key={index} char={char} colorIndex={index} />
-      ))}
+      <ImageText title={title} dateHuman={dateHuman} keywords={keywords} />
     </div>
   );
 };
 
-import { ImageResponse } from "@vercel/og";
-import { writeFile } from "fs/promises";
-import { mkdir } from "node:fs/promises";
 
 await mkdir("docs/og", { recursive: true });
 
 async function generate() {
   const image = new ImageResponse(
-    <ImageOg title="Hello World" />,
+    <ImageOg
+      title="Hello World"
+      dateHuman="This is a description"
+      keywords={["keyword1", "keyword2"]}
+    />,
     {
       width: 1200,
       height: 630,
+      
     }
   );
 
@@ -203,4 +328,28 @@ async function generate() {
   await writeFile("docs/og/og-image.png", buffer);
 }
 
-generate();
+//generate();
+
+
+export const generateDateSocialImage = async (dateEntry: DateEntry) => {
+  const imagePath = "docs/" + dateEntry.ogImageUrl;
+
+  const image = new ImageResponse(
+    <ImageOg title={dateEntry.title} dateHuman={dateEntry.dateHuman} keywords={dateEntry.keywords} />,
+    {
+      width: 1200,
+      height: 630,
+    }
+  );
+
+  const buffer = Buffer.from(await image.arrayBuffer());
+  await writeFile(imagePath, buffer);
+}
+
+export const generateAllDateSocialImages = async (dateEntries: DateEntry[]) => {
+    for (let i = 0; i < dateEntries.length; i++) {
+        const entry = dateEntries[i];
+        console.log(`Generating OG image ${entry.ogImageUrl} (${i + 1}/${dateEntries.length})`);
+        await generateDateSocialImage(entry);
+    }
+}
