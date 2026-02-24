@@ -9,3 +9,5 @@ node_modules
 src/mokick-core/
 src/mokick-core
 docs/index.js.map
+
+src/fonts
