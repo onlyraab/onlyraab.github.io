@@ -6,6 +6,8 @@ import { Edge } from '@mokick/core/types/Edge';
 import { StringNode } from '@mokick/core/types/StringNode';
 import { readdir } from "node:fs/promises";
 import legacyMokickGraph from '../../data/data/mokick-graph.json';
+import { generateDateSocialImage } from './og/image-generate';
+import { DateEntry } from './types/DateEntry';
 
 const ddMmYyyyRegex = /^(\d{2})\.(\d{2})\.(\d{4})$/;
 const dataIsoDateAttributeName = 'data-iso-date'
@@ -14,14 +16,6 @@ const dateDivMap = new Map<string, string[]>();
 const dateOrder: string[] = [];
 
 
-type DateEntry = {
-    url: string;
-    title: string;
-    dateString: string;
-    dateHuman: string;
-    dateDiv: string;
-    keywords: string[];
-};
 
 const dateEntries: DateEntry[] = [];
 
@@ -108,6 +102,7 @@ const createDateDiv = (edge: Edge) => {
 
         dateEntries.push({
             url: '',
+            ogImageUrl: '',
             title: dateTitle,
             dateString,
             dateHuman: dateString.split('-').reverse().join('.'),
@@ -170,6 +165,7 @@ const collectDateEntries = () => {
         }
         let url = 'date-' + entry.dateString + (duplicateIndex === 0 ? '' : '-' + chars[duplicateIndex - 1]) + '.html';
         entry.url = url;
+        entry.ogImageUrl = "img/social/" + url.replace('.html', '.png');
     }); 
 }
 
@@ -238,6 +234,7 @@ const createNewDateFields = async () => {
         updatedDateHtml = updatedDateHtml.split('<!--DATE_SPANS-->').join(dateHumanToSpans(dateHuman));
         updatedDateHtml = updatedDateHtml.split('<!--TITLE-->').join(entry.title);
         updatedDateHtml = updatedDateHtml.split('<!--URL-->').join(entry.url);
+        updatedDateHtml = updatedDateHtml.split('<!--OG_IMAGE_URL-->').join(entry.ogImageUrl);
         updatedDateHtml = updatedDateHtml.split('<!--KEYWORDS-->').join(entry.keywords.join(', '));
 
         const previousEntry = i > 0 ? dateEntries[i - 1] : null;
