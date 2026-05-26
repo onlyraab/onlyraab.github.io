@@ -4,7 +4,7 @@ import { legacyParser } from '@mokick/core/legacy/parser';
 import { edgesOutFilter, edgesOutForEach } from '@mokick/core/lists/edgesOutList';
 import { Edge } from '@mokick/core/types/Edge';
 import { StringNode } from '@mokick/core/types/StringNode';
-import { readdir } from "node:fs/promises";
+import { mkdir, readdir, rmdir } from "node:fs/promises";
 import legacyMokickGraph from '../../data/data/mokick-graph.json';
 import { generateAllDateSocialImages } from './og/image-generate';
 import { DateEntry } from './types/DateEntry';
@@ -163,7 +163,7 @@ const collectDateEntries = () => {
             duplicateDateString = dateString;
             duplicateIndex = 0;
         }
-        let url = 'date-' + entry.dateString + (duplicateIndex === 0 ? '' : '-' + chars[duplicateIndex - 1]) + '.html';
+        let url = 'dates/' + entry.dateString + (duplicateIndex === 0 ? '' : '-' + chars[duplicateIndex - 1]) + '.html';
         entry.url = url;
         entry.ogImageUrl = "img/social/" + url.replace('.html', '.png');
     }); 
@@ -204,14 +204,18 @@ await Bun.write('docs/index.html', updatedIndexHtml);
 // Clean up old date-*.html files
 const cleanOldDateFiles = async () => {
     const cleanedFiles: string[] = [];
-    const docFiles = await readdir('docs');
-    for (let i = 0; i < docFiles.length; i++) {
-        const file = docFiles[i];
+    const oldDocFiles = await readdir('docs');
+    for (let i = 0; i < oldDocFiles.length; i++) {
+        const file = oldDocFiles[i];
         if (file.startsWith('date-') && file.endsWith('.html')) {
             cleanedFiles.push(file);
             await Bun.file('docs/' + file).delete();
         }
     }
+
+    await rmdir('docs/dates', { recursive: true });
+    await mkdir('docs/dates');
+
     return cleanedFiles;
 }
 
@@ -226,7 +230,7 @@ const createNewDateFields = async () => {
     }
 
     const entryToAnchor = (href: string, text: string) => {
-        return '<a href="' + href+ '">' + text + '</a>';
+        return '<a href="/' + href+ '">' + text + '</a>';
     }
 
     for (let i = 0; i < dateEntries.length; i++) {
@@ -252,7 +256,11 @@ const createNewDateFields = async () => {
             updatedDateHtml = updatedDateHtml.split('<!--NEXT-->').join(nextAnchor);
         }
 
-        await Bun.write('docs/' + entry.url, updatedDateHtml);
+        await Bun.write("docs/" + entry.url, updatedDateHtml);
+
+        // Keep old date files for now, as they might be linked from other pages. We can clean them up later after verifying the new ones work correctly.
+        const oldFilePath = "docs/date-" + entry.url.substring("dates/".length);
+        await Bun.write(oldFilePath, updatedDateHtml);
     }
 }
 await createNewDateFields();
