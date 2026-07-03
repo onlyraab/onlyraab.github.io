@@ -20,7 +20,8 @@
     "baseUrl": ".",
     "paths": {
       "@mokick/core/*": ["src/mokick-core/*"],
-      "@mokick/core": ["src/mokick-core/index"]
+      "@mokick/core": ["src/mokick-core/index"],
+      "@mokick/edit/*": ["src/mokick-edit/*"],
     },
 
     /* Linting */
@@ -30,5 +31,6 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": ["src/**/*", "src/types/**/*"],
+  "exclude": ["src/mokick-core", "src/mokick-edit"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

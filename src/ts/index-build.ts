@@ -1,9 +1,9 @@
 // Main TypeScript entry point
 
-import { legacyParser } from '@mokick/core/legacy/parser';
 import { edgesOutFilter, edgesOutForEach } from '@mokick/core/lists/edgesOutList';
 import { Edge } from '@mokick/core/types/Edge';
 import { StringNode } from '@mokick/core/types/StringNode';
+import { legacyParser } from '@mokick/edit/legacy/parser';
 import { mkdir, readdir, rmdir } from "node:fs/promises";
 import legacyMokickGraph from '../../data/data/mokick-graph.json';
 import { generateAllDateSocialImages } from './og/image-generate';
@@ -119,30 +119,30 @@ const collectDateEntries = () => {
     const rootNode = legacyParser(legacyMokickGraph as any);
 
     const addressRootNode = edgesOutFilter(rootNode, (edge) => {
-        return edge.type === "ADDRESS_ROOT";
+        return edge.type === "ADDRESS_CHILD";
     })[0].nodeOut;
 
     const datesNode = edgesOutFilter(addressRootNode!, (edge) => {
-        return edge.type === "ADDRESS_HIERARCHY" && edge.slug === "dates";
+        return edge.type === "ADDRESS_CHILD" && edge.slug === "dates";
     })[0].nodeOut;
 
     // YEARS
     edgesOutForEach(datesNode!, (edge) => {
-        if (edge.type !== "ADDRESS_HIERARCHY") {
+        if (edge.type !== "ADDRESS_CHILD") {
             return;
         }
         createDateDiv(edge);
 
         // MONTHS
         edgesOutForEach(edge.nodeOut!, (edge) => {
-            if (edge.type !== "ADDRESS_HIERARCHY") {
+            if (edge.type !== "ADDRESS_CHILD") {
                 return;
             }
             createDateDiv(edge);
 
             // DAYS
             edgesOutForEach(edge.nodeOut!, (edge) => {
-                if (edge.type !== "ADDRESS_HIERARCHY") {
+                if (edge.type !== "ADDRESS_CHILD") {
                     return;
                 }
                 createDateDiv(edge);
