@@ -28,7 +28,14 @@ const createDateDiv = (edge: Edge) => {
     }
 
     const contentNode = contentEdges[0].nodeOut!;
-    const textContentEdges = edgesOutFilter(contentNode, (e: Edge) => e.slug === "text");
+
+    const dataEdges = edgesOutFilter(contentNode, (e: Edge) => e.type === "DATA");
+    if (dataEdges.length !== 1) {
+        return html;
+    }
+    const dataNode = dataEdges[0].nodeOut!;
+
+    const textContentEdges = edgesOutFilter(dataNode, (e: Edge) => e.slug === "text");
     if (textContentEdges.length !== 1) {
         return html;
     }
