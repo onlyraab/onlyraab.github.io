@@ -40,21 +40,30 @@
 </head>
 <body class="body--date">
     <header>
-        <h1><!--DATE_SPANS--></h1>
-        <h2><!--TITLE--></h2>
-        <h3 class="scroll-down">↓ Details ↓</h3>
+        <nav>
+            <ul class="nav-home">
+                <li><a href="/" title="Home">Home</a></li>
+            </ul>
+            <ul class="nav-history">
+                <!--PREVIOUS-->
+                <!--NEXT-->
+            </ul>
+        </nav>
     </header>
     <article>
+        <section class="hero">
+            <h1><!--DATE_SPANS--></h1>
+            <h2><!--TITLE--></h2>
+            <h3 class="scroll-down">↓ Details ↓</h3>
+        </section>
+        <section class="details">
+            <p><!--DETAILS--></p>
         <section class="dates">
 <!--ARTICLE_DATA-->
         </section>
     </article>
     <footer>
-        <ul>
-            <!--PREVIOUS-->
-            <li><a href="/" title="Home">Home</a></li>
-            <!--NEXT-->
-        </ul>
+        
     </footer>
     
     <!-- Load the compiled TypeScript -->
