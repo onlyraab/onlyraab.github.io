@@ -264,10 +264,6 @@ const createNewDateFields = async () => {
         }
 
         await Bun.write("docs/" + entry.url, updatedDateHtml);
-
-        // Keep old date files for now, as they might be linked from other pages. We can clean them up later after verifying the new ones work correctly.
-        const oldFilePath = "docs/date-" + entry.url.substring("dates/".length);
-        await Bun.write(oldFilePath, updatedDateHtml);
     }
 }
 await createNewDateFields();
