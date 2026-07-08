@@ -255,11 +255,11 @@ const createNewDateFields = async () => {
         const nextEntry = i < dateEntries.length - 1 ? dateEntries[i + 1] : null;
 
         if (previousEntry) {
-            const previousAnchor = entryToAnchor( previousEntry.url, "Previous");
+            const previousAnchor = entryToAnchor( previousEntry.url, " ◀ Newer");
             updatedDateHtml = updatedDateHtml.split('<!--PREVIOUS-->').join(previousAnchor);
         }
         if (nextEntry) {
-            const nextAnchor = entryToAnchor(nextEntry.url, "Next");
+            const nextAnchor = entryToAnchor(nextEntry.url, "Older ▶");
             updatedDateHtml = updatedDateHtml.split('<!--NEXT-->').join(nextAnchor);
         }
 
