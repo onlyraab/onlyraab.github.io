@@ -16,18 +16,52 @@
   "Segoe UI Emoji",
   "Segoe UI Symbol";
 
-  
 :root {
   --surface: @color-pink;
   --on-surface: @color-black;
   --accent: @color-yellow;
   --font-family-default: @font-family-default;
 
+  --footer-height: 52px;
 
   --icon-height-visible: 20px;
   --icon-button-height: 36px;
   --icon-button-min-width: 36px;
 
-  --padding-s: 9px;
-  --padding-m: 18px;
+  --padding-s: 8px;
+  --padding-m: 16px;
+
+  @media (min-width: 600px) {
+    --footer-height: 68px;
+
+    --icon-height-visible: 24px;
+    --icon-button-height: 44px;
+    --icon-button-min-width: 44px;
+
+    --padding-s: 12px;
+    --padding-m: 24px;
+  }
+  @media (min-width: 840px) {
+    --footer-height: 84px;
+
+    --icon-height-visible: 28px;
+    --icon-button-height: 52px;
+    --icon-button-min-width: 52px;
+
+    --padding-s: 16px;
+    --padding-m: 32px;
+  }
+  @media (min-width: 1200px) {
+    --footer-height: 100px;
+
+    --icon-height-visible: 32px;
+    --icon-button-height: 60px;
+    --icon-button-min-width: 60px;
+    --padding-s: 20px;
+    --padding-m: 40px;
+  }
+  @media (min-width: 1600px) {
+    --padding-s: 24px;
+    --padding-m: 48px;
+  }
 }

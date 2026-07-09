@@ -83,7 +83,11 @@ const createDateDiv = (edge: Edge) => {
             html += '<ul>';
 
             edgesOutForEach(e.nodeOut!, (e) => {
-            const valueString = (e.nodeOut! as StringNode).valueString;
+            let valueString = (e.nodeOut! as StringNode).valueString;
+            if (valueString.includes('"')) {
+                console.log('Replaced double quotes in value string: ' + valueString);
+                valueString = valueString.split('"').join("'");
+            }
             keywords.push(valueString);
                 html += '<li>' + valueString + '</li>';
             });
