@@ -16,6 +16,11 @@
   background-repeat: no-repeat;
   background-size: cover;
 
+  /* iOS Safari specific fixes */
+  -webkit-background-size: cover;
+  -webkit-transform: translate3d(0, 0, 0); /* Force hardware acceleration */
+  transform: translate3d(0, 0, 0);
+
   a {
     color: var(--accent);
     font-weight: bolder;
