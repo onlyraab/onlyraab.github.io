@@ -1,0 +1,11 @@
+.text-outline(@straight, @diagonal, @color) {
+  text-shadow:
+    @straight  0          0 @color,
+   -@straight  0          0 @color,
+    0          @straight  0 @color,
+    0         -@straight  0 @color,
+    @diagonal  @diagonal  0 @color,
+   -@diagonal -@diagonal  0 @color,
+    @diagonal -@diagonal  0 @color,
+   -@diagonal  @diagonal  0 @color;
+}
