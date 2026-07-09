@@ -200,7 +200,12 @@ collectDateEntries();
 
 console.log('Total date entries: ' + dateEntries.length);
 
-await generateAllDateSocialImages(dateEntries);
+if (!process.argv.includes('--skip-social-images')) {
+    await generateAllDateSocialImages(dateEntries);
+}
+else {
+    console.log('Skipping social image generation for all date entries.');
+}
 
 
 const indexHtml = await Bun.file('src/html/index.html').text();
