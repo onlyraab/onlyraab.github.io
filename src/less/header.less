@@ -1,0 +1,95 @@
+header {
+  padding: var(--padding-s);
+
+  nav {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  li {
+    list-style: none;
+  }
+
+  a {
+    align-items: center;
+    display: flex;
+    height: var(--icon-button-height);
+    justify-content: center;
+    min-width: var(--icon-button-min-width);
+    text-decoration: none;
+  }
+
+  .icon {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+    height: var(--icon-height-visible);
+  }
+}
+
+.nav-social {
+  display: flex;
+  gap: var(--padding-s);
+  padding-left: var(--padding-s);
+  padding-right: var(--padding-s);
+}
+
+.nav-history {
+  display: flex;
+  gap: var(--padding-m);
+  padding-left: var(--padding-s);
+  padding-right: var(--padding-s);
+}
+.nav-history a {
+  color: var(--accent);
+  text-transform: uppercase;
+  font-weight: bolder;
+}
+
+// Apply the background images and aspect ration
+.nav-home .icon {
+  aspect-ratio: 400/282;
+  background-image: url("/svg/icons/onlyraab-400x282-pink.svg");
+}
+
+.nav-facebook .icon {
+  aspect-ratio: 36/36;
+  background-image: url("/svg/icons/facebook-36x36-yellow.svg");
+}
+
+.nav-mixcloud .icon {
+  aspect-ratio: 89/60;
+  background-image: url("/svg/icons/mixcloud-89x60-yellow.svg");
+}
+
+.nav-resident-advisor .icon {
+  aspect-ratio: 83/40;
+  background-image: url("/svg/icons/resident-advisor-83x40-yellow.svg");
+}
+
+.nav-soundcloud .icon {
+  aspect-ratio: 83/40;
+  background-image: url("/svg/icons/soundcloud-143x64-yellow.svg");
+}
+
+.nav-telegram .icon {
+  aspect-ratio: 333334/333334;
+  background-image: url("/svg/icons/telegram-333334x333334-yellow.svg");
+}
+
+.nav-home a {
+  background-color: var(--accent);
+  aspect-ratio: 1;
+
+  /* Fallback */
+  border-radius: 28px;
+
+  /* Enhancement */
+  corner-shape: squircle;
+
+  aspect-ratio: 400/400;
+  height: var(--icon-button-height);
+}
