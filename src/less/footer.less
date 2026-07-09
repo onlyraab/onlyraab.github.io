@@ -1,16 +1,22 @@
 footer {
+  padding-top: var(--footer-height);
   div {
     min-height: var(--footer-height);
     background-color: var(--accent);
-    &:nth-child(even) {
-    }
 
-    &:nth-child(2),&:nth-child(3), &:nth-child(4), &:nth-child(5), &:nth-child(6) {
-        min-height: 10px;
-        min-height: calc(var(--footer-height) * 0.1);
+    &:nth-child(1),
+    &:nth-child(2),
+    &:nth-child(3),
+    &:nth-child(4),
+    &:nth-child(5),
+    &:nth-child(6) {
+      min-height: 10px;
+      min-height: calc(var(--footer-height) * 0.1);
     }
-    &:nth-child(2), &:nth-child(4), &:nth-child(6) {
-        background-color: var(--surface);
+    &:nth-child(2),
+    &:nth-child(4),
+    &:nth-child(6) {
+      background-color: var(--surface);
     }
   }
 }
