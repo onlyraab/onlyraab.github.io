@@ -15,7 +15,7 @@ const dataIsoDateAttributeName = 'data-iso-date'
 const dateDivMap = new Map<string, string[]>();
 const dateOrder: string[] = [];
 
-
+const CACHE_INVALIDATOR = new Date().getTime();
 
 const dateEntries: DateEntry[] = [];
 
@@ -213,7 +213,8 @@ else {
 
 
 const indexHtml = await Bun.file('src/html/index.html').text();
-const updatedIndexHtml = indexHtml.replace('<!--ARTICLE_DATA-->', createIndexDatesSection());
+let updatedIndexHtml = indexHtml.replace('<!--ARTICLE_DATA-->', createIndexDatesSection());
+updatedIndexHtml = updatedIndexHtml.split('<!--CACHE_INVALIDATOR-->').join(CACHE_INVALIDATOR.toString());
 await Bun.write('docs/index.html', updatedIndexHtml);
 
 
@@ -259,6 +260,7 @@ const createNewDateFields = async () => {
         updatedDateHtml = updatedDateHtml.split('<!--URL-->').join(entry.url);
         updatedDateHtml = updatedDateHtml.split('<!--OG_IMAGE_URL-->').join(entry.ogImageUrl);
         updatedDateHtml = updatedDateHtml.split('<!--KEYWORDS-->').join(entry.keywords.join(', '));
+        updatedDateHtml = updatedDateHtml.split('<!--CACHE_INVALIDATOR-->').join(CACHE_INVALIDATOR.toString());
 
         const previousEntry = i > 0 ? dateEntries[i - 1] : null;
         const nextEntry = i < dateEntries.length - 1 ? dateEntries[i + 1] : null;
