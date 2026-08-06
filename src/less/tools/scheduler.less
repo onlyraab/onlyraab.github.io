@@ -1,21 +1,15 @@
 @import "../resets.less";
 @import "../variables.less";
 @import "../header.less";
-@import "../hero.less";
-@import "../body/index.less";
-@import "../body/date.less";
-@import "../transitions.less";
 @import "../footer.less";
+@import "../transitions.less";
 @import "../mixins.less";
 
 html {
-  background-color: var(--surface);
+  background-color: var(--tool-bg);
   font-family: var(--font-family-default);
-  font-size: 18px;
-  line-height: 1.6;
   min-height: 100vh;
   min-height: 100dvh;
-  scroll-behavior: smooth;
   width: 100%;
 }
 
@@ -25,4 +19,344 @@ body {
   width: 100%;
   display: flex;
   flex-direction: column;
+}
+
+// Page-scoped design tokens. The rest of the site uses a bold, fixed
+// pink/yellow/black brand palette (see variables.less) which isn't right
+// for a schedule that needs to be read at a glance during an event, so
+// the scheduler gets its own light/dark-aware surface here instead.
+.body--scheduler {
+  --tool-bg: hsl(220, 18%, 95%);
+  --tool-surface: hsl(0, 0%, 100%);
+  --tool-text: hsl(220, 20%, 10%);
+  --tool-muted: hsl(220, 10%, 45%);
+  --tool-border: hsl(220, 16%, 88%);
+  --tool-accent: hsl(243, 75%, 63%);
+  --tool-accent-contrast: hsl(0, 0%, 100%);
+  --tool-danger: hsl(0, 65%, 45%);
+  --tool-danger-bg: hsl(0, 65%, 96%);
+  --tool-now-bg: hsl(243, 60%, 95%);
+  --tool-radius-l: 18px;
+  --tool-radius-s: 10px;
+  --tool-shadow: 0 1px 2px rgba(20, 20, 30, 0.04), 0 4px 16px rgba(20, 20, 30, 0.06);
+
+  @media (prefers-color-scheme: dark) {
+    --tool-bg: hsl(226, 20%, 8%);
+    --tool-surface: hsl(226, 16%, 14%);
+    --tool-text: hsl(220, 20%, 94%);
+    --tool-muted: hsl(220, 10%, 65%);
+    --tool-border: hsl(226, 14%, 22%);
+    --tool-accent: hsl(243, 90%, 75%);
+    --tool-accent-contrast: hsl(226, 20%, 10%);
+    --tool-danger: hsl(0, 90%, 70%);
+    --tool-danger-bg: hsl(0, 45%, 16%);
+    --tool-now-bg: hsl(243, 30%, 22%);
+    --tool-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 20px rgba(0, 0, 0, 0.35);
+  }
+
+  background-color: var(--tool-bg);
+  color: var(--tool-text);
+  flex: 1;
+
+  header {
+    background-color: var(--tool-bg);
+  }
+
+  article {
+    flex: 1;
+    max-width: 640px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 var(--padding-s) 48px;
+  }
+
+  .tool-header {
+    text-align: center;
+    padding: 4px 0 20px;
+    animation: fade-in 0.4s ease both;
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.6rem, 5vw, 2.1rem);
+      letter-spacing: -0.02em;
+    }
+    p {
+      margin: 6px 0 0;
+      color: var(--tool-muted);
+      font-size: 0.95rem;
+    }
+  }
+
+  .card {
+    background: var(--tool-surface);
+    border: 1px solid var(--tool-border);
+    border-radius: var(--tool-radius-l);
+    box-shadow: var(--tool-shadow);
+    padding: 20px;
+    margin-bottom: 20px;
+    animation: fade-in 0.35s ease both;
+
+    h2 {
+      margin: 0 0 16px;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--tool-muted);
+      text-align: center;
+      font-weight: 600;
+    }
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  // ---------- Inputs card ----------
+  .inputs-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+
+    @media (max-width: 420px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    &.field-wide {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-size: 0.85rem;
+      color: var(--tool-muted);
+      font-weight: 600;
+    }
+
+    input {
+      font: inherit;
+      font-variant-numeric: tabular-nums;
+      font-feature-settings: "tnum" 1;
+      padding: 10px 12px;
+      border: 1px solid var(--tool-border);
+      border-radius: var(--tool-radius-s);
+      background: var(--tool-bg);
+      color: var(--tool-text);
+      width: 100%;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+      &:focus {
+        outline: none;
+        border-color: var(--tool-accent);
+        box-shadow: 0 0 0 3px hsla(243, 75%, 63%, 0.25);
+      }
+    }
+  }
+
+  .validation {
+    margin-top: 14px;
+    padding: 10px 14px;
+    border-radius: var(--tool-radius-s);
+    background: var(--tool-danger-bg);
+    color: var(--tool-danger);
+    font-size: 0.9rem;
+
+    &[hidden] {
+      display: none;
+    }
+  }
+
+  // ---------- Schedule card ----------
+  .schedule-card {
+    padding: 8px 8px 16px;
+
+    h2 {
+      padding-top: 12px;
+    }
+  }
+
+  .schedule-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .schedule-row {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    padding: 14px 16px;
+    border-radius: var(--tool-radius-s);
+    transition: background-color 0.25s ease;
+
+    + .schedule-row {
+      border-top: 1px solid var(--tool-border);
+    }
+
+    &.now-playing {
+      background: var(--tool-now-bg);
+      border-radius: var(--tool-radius-s);
+    }
+  }
+
+  .schedule-time {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum" 1;
+    font-weight: 700;
+    color: var(--tool-accent);
+    min-width: 11ch;
+    font-size: clamp(1rem, 2.6vw, 1.15rem);
+  }
+
+  .schedule-name {
+    font-size: clamp(1.05rem, 3.2vw, 1.3rem);
+    font-weight: 600;
+    overflow-wrap: anywhere;
+  }
+
+  .schedule-empty {
+    margin: 0;
+    padding: 24px 16px;
+    text-align: center;
+    color: var(--tool-muted);
+  }
+
+  // ---------- QR card ----------
+  .qr-card {
+    text-align: center;
+  }
+
+  #qrcode {
+    max-width: 220px;
+    margin: 0 auto 16px;
+    line-height: 0;
+
+    svg {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: var(--tool-radius-s);
+    }
+  }
+
+  .qr-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  button {
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .btn {
+    padding: 10px 16px;
+    border-radius: var(--tool-radius-s);
+    border: 1px solid var(--tool-border);
+    background: var(--tool-bg);
+    color: var(--tool-text);
+    font-weight: 600;
+    transition: transform 0.1s ease, background-color 0.15s ease, border-color 0.15s ease;
+
+    &:hover {
+      border-color: var(--tool-accent);
+    }
+    &:active {
+      transform: scale(0.97);
+    }
+
+    &.btn-primary {
+      background: var(--tool-accent);
+      border-color: var(--tool-accent);
+      color: var(--tool-accent-contrast);
+    }
+  }
+
+  // ---------- Editor card ----------
+  .editor-list {
+    list-style: none;
+    margin: 0 0 16px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .editor-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px;
+    border: 1px solid var(--tool-border);
+    border-radius: var(--tool-radius-s);
+    background: var(--tool-bg);
+    transition: border-color 0.15s ease, opacity 0.15s ease, background-color 0.15s ease;
+
+    &.dragging {
+      opacity: 0.4;
+    }
+    &.drag-over {
+      border-color: var(--tool-accent);
+    }
+
+    input[type="text"] {
+      flex: 1;
+      min-width: 0;
+      font: inherit;
+      padding: 8px 10px;
+      border: 1px solid transparent;
+      border-radius: var(--tool-radius-s);
+      background: var(--tool-surface);
+      color: var(--tool-text);
+
+      &:focus {
+        outline: none;
+        border-color: var(--tool-accent);
+      }
+    }
+  }
+
+  .drag-handle {
+    cursor: grab;
+    color: var(--tool-muted);
+    padding: 0 2px;
+    user-select: none;
+  }
+
+  .icon-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: var(--tool-radius-s);
+    border: 1px solid var(--tool-border);
+    background: var(--tool-surface);
+    color: var(--tool-text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    flex-shrink: 0;
+
+    &:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+  }
+
+  .randomize-row {
+    display: flex;
+    justify-content: center;
+  }
 }

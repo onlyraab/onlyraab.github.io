@@ -2,28 +2,92 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    
+
+    <meta name="format-detection" content="telephone=no">
+
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="OnlyRaab" />
+    <link rel="manifest" href="/web-app.webmanifest" />
+
+    <link rel="canonical" href="https://onlyraab.com/tools/scheduler.html"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Split a set of DJs evenly across a time window and share the schedule via link or QR code.">
+    <meta name="keywords" content="DJ, scheduler, DJ schedule, set times, DERRAAB">
+    <meta name="author" content="DERRAAB">
+    <title>DJ Scheduler | OnlyRaab</title>
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://onlyraab.com/tools/scheduler.html">
+    <meta property="og:title" content="DJ Scheduler">
+    <meta property="og:description" content="Split a set of DJs evenly across a time window and share the schedule via link or QR code.">
+    <meta property="og:site_name" content="OnlyRaab">
+
+    <meta name="twitter:card" content="summary">
+
     <!-- Load the compiled LESS styles -->
     <link rel="stylesheet" href="scheduler.css">
 </head>
-<body class="body--index">
+<body class="body--scheduler">
     <header>
         <nav>
             <ul class="nav-main">
                 <li class="nav-home"><a href="/" title="Home"><span class="icon"></span></a></li>
             </ul>
-            <ul class="nav-social">
-                <li class="nav-soundcloud"><a target="_blank" href="https://soundcloud.com/derraab" title="SoundCloud profile will have the most recent mixes."><span class="icon"></span></a></li>
-                <li class="nav-telegram"><a target="_blank" href="https://t.me/onlyraab_com" title="Telegram channel for updates."><span class="icon"></span></a></li>
-                <!-- <li><a target="_blank" href="http://electronicsat.net/de/" title="electronicSat was our music and party project founded in 1998. Still up as an archive.">electronicSat</a></li> -->
-                <li class="nav-facebook"><a target="_blank" href="https://facebook.com/derraab.music" title="I sometimes update my facebook page."><span class="icon"></span></a></li>
-                <li class="nav-mixcloud"><a target="_blank" href="https://mixcloud.com/derraab" title="Mixcloud holds some of my old DJ mixes."><span class="icon"></span></a></li>
-                <!-- <li><a target="_blank" href="https://myspace.com/derraab" title="I still have my profile for sentimental reasons.">MySpace</a></li> -->
-                <li class="nav-resident-advisor"><a target="_blank" href="https://ra.co/dj/derraab" title="Resident Advisor profile."><span class="icon"></span></a></li>
-            </ul>
         </nav>
     </header>
     <article>
+
+        <div class="tool-header">
+            <h1>DJ Scheduler</h1>
+            <p>Evenly split set times &mdash; updates live, shareable by link or QR code.</p>
+        </div>
+
+        <!-- Inputs: start time, end time, number of DJs -->
+        <section class="card" aria-label="Schedule settings">
+            <div class="inputs-grid">
+                <div class="field">
+                    <label for="start-time">Start Time</label>
+                    <input type="time" id="start-time">
+                </div>
+                <div class="field">
+                    <label for="end-time">End Time</label>
+                    <input type="time" id="end-time">
+                </div>
+                <div class="field field-wide">
+                    <label for="dj-count">Number of DJs</label>
+                    <input type="number" id="dj-count" min="1" max="50" step="1" inputmode="numeric">
+                </div>
+            </div>
+            <p class="validation" id="validation-message" hidden></p>
+        </section>
+
+        <!-- Schedule: the primary, most visually dominant part of the page -->
+        <section class="card schedule-card" aria-label="Schedule">
+            <h2>Schedule</h2>
+            <div id="schedule"></div>
+        </section>
+
+        <!-- QR code + share actions -->
+        <section class="card qr-card" aria-label="Share">
+            <h2>QR Code</h2>
+            <div id="qrcode"></div>
+            <div class="qr-actions">
+                <button type="button" class="btn btn-primary" id="copy-link-btn">Copy Share Link</button>
+                <button type="button" class="btn" id="download-qr-btn">Download QR Code</button>
+            </div>
+        </section>
+
+        <!-- DJ order editor -->
+        <section class="card" aria-label="Edit DJs">
+            <h2>Edit DJs</h2>
+            <ul class="editor-list" id="editor-list"></ul>
+            <div class="randomize-row">
+                <button type="button" class="btn" id="randomize-btn">Randomize Order</button>
+            </div>
+        </section>
 
     </article>
     <footer>
@@ -35,7 +99,7 @@
         <div></div>
         <div></div>
     </footer>
-    
+
     <!-- Load the compiled TypeScript -->
     <script type="module" src="scheduler.js"></script>
 </body>
