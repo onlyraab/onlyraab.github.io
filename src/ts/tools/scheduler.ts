@@ -322,6 +322,23 @@ function renderQRCode(url: string): void {
   qrContainer.innerHTML = currentQr.createSvgTag({ cellSize: 4, margin: 4, scalable: true });
 }
 
+// Runs `fn` (which changes the number of DJ rows and re-renders) while
+// keeping the page's scroll position visually stable. Adding or removing
+// rows changes the document's height, so holding the raw scrollY would
+// let the page jump around the edited input; instead the scroll offset
+// is captured as a fraction of the scrollable height and re-applied
+// after the DOM has settled, landing back at the same relative spot.
+function withScrollPreserved(fn: () => void): void {
+  const scrollEl = document.scrollingElement || document.documentElement;
+  const maxScrollBefore = scrollEl.scrollHeight - window.innerHeight;
+  const ratio = maxScrollBefore > 0 ? window.scrollY / maxScrollBefore : 0;
+
+  fn();
+
+  const maxScrollAfter = scrollEl.scrollHeight - window.innerHeight;
+  window.scrollTo(0, ratio * maxScrollAfter);
+}
+
 // ---------------------------------------------------------------------
 // Master render: recompute everything from `state` and sync the URL.
 // ---------------------------------------------------------------------
@@ -352,15 +369,17 @@ function setupEventListeners(): void {
   });
 
   djCountInput.addEventListener('input', () => {
-    let n = parseInt(djCountInput.value, 10);
-    if (isNaN(n)) n = 0;
-    n = Math.max(0, Math.min(50, n));
-    if (n > state.p.length) {
-      while (state.p.length < n) state.p.push('');
-    } else {
-      state.p.length = n;
-    }
-    render();
+    withScrollPreserved(() => {
+      let n = parseInt(djCountInput.value, 10);
+      if (isNaN(n)) n = 0;
+      n = Math.max(0, Math.min(50, n));
+      if (n > state.p.length) {
+        while (state.p.length < n) state.p.push('');
+      } else {
+        state.p.length = n;
+      }
+      render();
+    });
   });
 
   // Delegated listeners on the editor list -- rows are recreated on every
