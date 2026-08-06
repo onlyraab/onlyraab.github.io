@@ -55,7 +55,9 @@ const randomizeBtn = document.getElementById('randomize-btn') as HTMLButtonEleme
 // ---------------------------------------------------------------------
 
 function defaultState(): SchedulerState {
-  return { s: 18 * 60, d: 4 * 60, p: ['Alice', 'Bob', 'Charlie', 'Dave'] };
+  const now = new Date();
+  const nextHour = (now.getHours() + 1) % 24;
+  return { s: nextHour * 60, d: 60, p: ['DJ 1'] };
 }
 
 // JSON -> compressed, URL-safe string.
