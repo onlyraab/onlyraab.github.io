@@ -11,7 +11,7 @@ import qrcode from 'qrcode-generator';
 
 interface SchedulerState {
   s: number; // start time, minutes after midnight
-  e: number; // end time, minutes after midnight
+  d: number; // duration, in minutes (may run past midnight into the next day)
   p: string[]; // ordered DJ names
 }
 
@@ -40,7 +40,7 @@ let currentQr: ReturnType<typeof qrcode> | null = null;
 // DOM references (queried once)
 // ---------------------------------------------------------------------
 const startInput = document.getElementById('start-time') as HTMLInputElement;
-const endInput = document.getElementById('end-time') as HTMLInputElement;
+const durationInput = document.getElementById('duration') as HTMLInputElement;
 const djCountInput = document.getElementById('dj-count') as HTMLInputElement;
 const validationEl = document.getElementById('validation-message') as HTMLElement;
 const scheduleEl = document.getElementById('schedule') as HTMLElement;
@@ -55,7 +55,7 @@ const randomizeBtn = document.getElementById('randomize-btn') as HTMLButtonEleme
 // ---------------------------------------------------------------------
 
 function defaultState(): SchedulerState {
-  return { s: 18 * 60, e: 22 * 60, p: ['Alice', 'Bob', 'Charlie', 'Dave'] };
+  return { s: 18 * 60, d: 4 * 60, p: ['Alice', 'Bob', 'Charlie', 'Dave'] };
 }
 
 // JSON -> compressed, URL-safe string.
@@ -71,12 +71,12 @@ function decodeState(hash: string): SchedulerState | null {
     const json = LZString.decompressFromEncodedURIComponent(hash);
     if (!json) return null;
     const obj = JSON.parse(json);
-    if (!Number.isFinite(obj.s) || !Number.isFinite(obj.e) || !Array.isArray(obj.p)) {
+    if (!Number.isFinite(obj.s) || !Number.isFinite(obj.d) || !Array.isArray(obj.p)) {
       return null;
     }
     return {
       s: obj.s,
-      e: obj.e,
+      d: obj.d,
       p: obj.p.slice(0, 200).map((name: unknown) => String(name))
     };
   } catch (err) {
@@ -114,20 +114,23 @@ function formatMinutes(mins: number): string {
 function validateState(s: SchedulerState): ValidationResult {
   const errors: string[] = [];
   if (s.p.length < 1) errors.push('Add at least one DJ.');
-  if (!(s.e > s.s)) errors.push('End time must be after start time.');
+  if (s.d <= 0) errors.push('Duration must be longer than zero.');
   return { valid: errors.length === 0, errors };
 }
 
 // ---------------------------------------------------------------------
 // Schedule calculation
 //
-// Total minutes are split evenly; a duration that doesn't divide evenly
+// The duration is split evenly; a duration that doesn't divide evenly
 // leaves a remainder of whole minutes, which is handed out one-per-slot
-// to the earliest DJs so the end time always lands exactly on `e`.
+// to the earliest DJs so the schedule always adds up to exactly `d`.
+// The end of the last slot (start + duration) can pass 1440, i.e. run
+// into the next day -- formatMinutes() wraps it back onto a 24h clock
+// for display.
 // ---------------------------------------------------------------------
 
 function calculateSchedule(s: SchedulerState): ScheduleSlot[] {
-  const total = s.e - s.s;
+  const total = s.d;
   const n = s.p.length;
   if (n < 1 || total <= 0) return [];
 
@@ -185,7 +188,7 @@ function randomizePeople(s: SchedulerState): void {
 
 function renderInputs(s: SchedulerState): void {
   if (document.activeElement !== startInput) startInput.value = formatMinutes(s.s);
-  if (document.activeElement !== endInput) endInput.value = formatMinutes(s.e);
+  if (document.activeElement !== durationInput) durationInput.value = formatMinutes(s.d);
   if (document.activeElement !== djCountInput) djCountInput.value = String(s.p.length);
 }
 
@@ -212,13 +215,19 @@ function renderSchedule(schedule: ScheduleSlot[], validation: ValidationResult):
 
   const now = new Date();
   const nowMinutes = now.getHours() * 60 + now.getMinutes();
+  // Slot times run on an extended timeline that can pass 1440 (midnight)
+  // for overnight schedules. If the clock is earlier than the schedule's
+  // start time, it must be showing the next-day portion, so shift it onto
+  // that same extended timeline before comparing against slots.
+  const scheduleStart = schedule.length ? schedule[0].start : 0;
+  const nowExtended = nowMinutes < scheduleStart ? nowMinutes + 1440 : nowMinutes;
 
   const list = document.createElement('ul');
   list.className = 'schedule-list';
   schedule.forEach((slot) => {
     const li = document.createElement('li');
     li.className = 'schedule-row';
-    if (nowMinutes >= slot.start && nowMinutes < slot.end) {
+    if (nowExtended >= slot.start && nowExtended < slot.end) {
       li.classList.add('now-playing');
     }
 
@@ -335,8 +344,8 @@ function setupEventListeners(): void {
     render();
   });
 
-  endInput.addEventListener('input', () => {
-    if (endInput.value) state.e = timeToMinutes(endInput.value);
+  durationInput.addEventListener('input', () => {
+    if (durationInput.value) state.d = timeToMinutes(durationInput.value);
     render();
   });
 
