@@ -31,17 +31,19 @@ export default defineConfig(({ command, mode }) => {
       outDir: 'docs',
       emptyOutDir: false,
       rollupOptions: {
-        input: 'src/ts/index.ts',
+        input: {
+          index: 'src/ts/index.ts',
+          'tools/scheduler': 'src/ts/tools/scheduler.ts'
+        },
         output: {
-          entryFileNames: 'index.js',
+          entryFileNames: '[name].js',
           assetFileNames: (assetInfo) => {
             if (assetInfo.name?.endsWith('.css')) {
-              return 'index.css'
+              return assetInfo.name === 'scheduler.css' ? 'tools/scheduler.css' : 'index.css'
             }
             return '[name].[ext]'
           },
-          format: 'es',
-          inlineDynamicImports: true
+          format: 'es'
         }
       },
       minify: isProduction,
