@@ -48,7 +48,6 @@ const qrContainer = document.getElementById('qrcode') as HTMLElement;
 const copyBtn = document.getElementById('copy-link-btn') as HTMLButtonElement;
 const downloadBtn = document.getElementById('download-qr-btn') as HTMLButtonElement;
 const editorList = document.getElementById('editor-list') as HTMLUListElement;
-const randomizeBtn = document.getElementById('randomize-btn') as HTMLButtonElement;
 
 // ---------------------------------------------------------------------
 // State <-> URL hash
@@ -171,16 +170,6 @@ function movePerson(s: SchedulerState, from: number, to: number): void {
   if (from === to || from < 0 || to < 0 || from >= s.p.length || to >= s.p.length) return;
   const [item] = s.p.splice(from, 1);
   s.p.splice(to, 0, item);
-  render();
-}
-
-function randomizePeople(s: SchedulerState): void {
-  for (let i = s.p.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    const tmp = s.p[i];
-    s.p[i] = s.p[j];
-    s.p[j] = tmp;
-  }
   render();
 }
 
@@ -438,8 +427,6 @@ function setupEventListeners(): void {
     const to = Number(row.dataset.index);
     movePerson(state, from, to);
   });
-
-  randomizeBtn.addEventListener('click', () => randomizePeople(state));
 
   copyBtn.addEventListener('click', async () => {
     const original = copyBtn.textContent;
