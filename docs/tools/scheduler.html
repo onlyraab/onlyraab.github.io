@@ -61,30 +61,38 @@
             </div>
         </section>
 
-        <!-- Inputs: start time, duration, number of DJs -->
-        <section class="card" aria-label="Schedule settings">
-            <div class="inputs-grid">
-                <div class="field">
-                    <label for="start-time">Start Time</label>
-                    <input type="time" id="start-time">
-                </div>
-                <div class="field">
-                    <label for="duration">Duration (h:mm)</label>
-                    <input type="time" id="duration">
-                </div>
-                <div class="field field-wide">
-                    <label for="dj-count">Number of DJs</label>
-                    <input type="number" id="dj-count" min="1" max="50" step="1" inputmode="numeric">
-                </div>
-            </div>
-            <p class="validation" id="validation-message" hidden></p>
-        </section>
+        <div class="edit-toggle-row">
+            <button type="button" class="btn" id="edit-toggle-btn" aria-expanded="false" aria-controls="edit-panel">Edit</button>
+        </div>
 
-        <!-- DJ order editor -->
-        <section class="card" aria-label="Edit DJs">
-            <h2>Edit DJs</h2>
-            <ul class="editor-list" id="editor-list"></ul>
-        </section>
+        <div id="edit-panel" hidden>
+
+            <!-- Inputs: start time, duration, number of DJs -->
+            <section class="card" aria-label="Schedule settings">
+                <div class="inputs-grid">
+                    <div class="field">
+                        <label for="start-time">Start Time</label>
+                        <input type="time" id="start-time">
+                    </div>
+                    <div class="field">
+                        <label for="duration">Duration (h:mm)</label>
+                        <input type="time" id="duration">
+                    </div>
+                    <div class="field field-wide">
+                        <label for="dj-count">Number of DJs</label>
+                        <input type="number" id="dj-count" min="1" max="50" step="1" inputmode="numeric">
+                    </div>
+                </div>
+                <p class="validation" id="validation-message" hidden></p>
+            </section>
+
+            <!-- DJ order editor -->
+            <section class="card" aria-label="Edit DJs">
+                <h2>Edit DJs</h2>
+                <ul class="editor-list" id="editor-list"></ul>
+            </section>
+
+        </div>
 
     </article>
     <footer>

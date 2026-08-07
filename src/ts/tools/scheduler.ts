@@ -48,6 +48,8 @@ const qrContainer = document.getElementById('qrcode') as HTMLElement;
 const copyBtn = document.getElementById('copy-link-btn') as HTMLButtonElement;
 const downloadBtn = document.getElementById('download-qr-btn') as HTMLButtonElement;
 const editorList = document.getElementById('editor-list') as HTMLUListElement;
+const editPanel = document.getElementById('edit-panel') as HTMLElement;
+const editToggleBtn = document.getElementById('edit-toggle-btn') as HTMLButtonElement;
 
 // ---------------------------------------------------------------------
 // State <-> URL hash
@@ -199,7 +201,7 @@ function renderSchedule(schedule: ScheduleSlot[], validation: ValidationResult):
   if (!validation.valid) {
     const p = document.createElement('p');
     p.className = 'schedule-empty';
-    p.textContent = 'Fix the settings above to see the schedule.';
+    p.textContent = 'Tap Edit to fix the schedule settings.';
     scheduleEl.appendChild(p);
     return;
   }
@@ -363,7 +365,7 @@ function setupEventListeners(): void {
       if (isNaN(n)) n = 0;
       n = Math.max(0, Math.min(50, n));
       if (n > state.p.length) {
-        while (state.p.length < n) state.p.push('');
+        while (state.p.length < n) state.p.push('DJ ' + (state.p.length + 1));
       } else {
         state.p.length = n;
       }
@@ -426,6 +428,15 @@ function setupEventListeners(): void {
     const from = Number(e.dataTransfer.getData('text/plain'));
     const to = Number(row.dataset.index);
     movePerson(state, from, to);
+  });
+
+  // The settings and DJ editor stay out of the way until asked for, so
+  // the schedule and QR code are what's immediately visible on arrival.
+  editToggleBtn.addEventListener('click', () => {
+    const willShow = editPanel.hidden;
+    editPanel.hidden = !willShow;
+    editToggleBtn.textContent = willShow ? 'Done' : 'Edit';
+    editToggleBtn.setAttribute('aria-expanded', String(willShow));
   });
 
   copyBtn.addEventListener('click', async () => {
