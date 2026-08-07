@@ -21,38 +21,25 @@ body {
   flex-direction: column;
 }
 
-// Page-scoped design tokens. The rest of the site uses a bold, fixed
-// pink/yellow/black brand palette (see variables.less) which isn't right
-// for a schedule that needs to be read at a glance during an event, so
-// the scheduler gets its own light/dark-aware surface here instead.
+// Page-scoped design tokens, built from the site's own brand colors
+// (@color-pink / @color-yellow / @color-black, see variables.less) so the
+// tool reads as part of the same site rather than a separate app.
 .body--scheduler {
-  --tool-bg: hsl(220, 18%, 95%);
-  --tool-surface: hsl(0, 0%, 100%);
-  --tool-text: hsl(220, 20%, 10%);
-  --tool-muted: hsl(220, 10%, 45%);
-  --tool-border: hsl(220, 16%, 88%);
-  --tool-accent: hsl(243, 75%, 63%);
-  --tool-accent-contrast: hsl(0, 0%, 100%);
+  --tool-bg: @color-pink;
+  --tool-surface: @color-yellow;
+  --tool-text: @color-black;
+  --tool-muted: mix(@color-black, @color-pink, 75%);
+  --tool-border: fade(@color-pink, 35%);
+  --tool-accent: @color-pink-dim;
+  --tool-accent-soft: fade(@color-pink-dim, 25%);
+  --tool-highlight: @color-pink;
+  --tool-highlight-contrast: @color-black;
   --tool-danger: hsl(0, 65%, 45%);
   --tool-danger-bg: hsl(0, 65%, 96%);
-  --tool-now-bg: hsl(243, 60%, 95%);
+  --tool-now-bg: fade(@color-pink, 35%);
   --tool-radius-l: 18px;
   --tool-radius-s: 10px;
   --tool-shadow: 0 1px 2px rgba(20, 20, 30, 0.04), 0 4px 16px rgba(20, 20, 30, 0.06);
-
-  @media (prefers-color-scheme: dark) {
-    --tool-bg: hsl(226, 20%, 8%);
-    --tool-surface: hsl(226, 16%, 14%);
-    --tool-text: hsl(220, 20%, 94%);
-    --tool-muted: hsl(220, 10%, 65%);
-    --tool-border: hsl(226, 14%, 22%);
-    --tool-accent: hsl(243, 90%, 75%);
-    --tool-accent-contrast: hsl(226, 20%, 10%);
-    --tool-danger: hsl(0, 90%, 70%);
-    --tool-danger-bg: hsl(0, 45%, 16%);
-    --tool-now-bg: hsl(243, 30%, 22%);
-    --tool-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 20px rgba(0, 0, 0, 0.35);
-  }
 
   background-color: var(--tool-bg);
   color: var(--tool-text);
@@ -79,6 +66,8 @@ body {
       margin: 0;
       font-size: clamp(1.6rem, 5vw, 2.1rem);
       letter-spacing: -0.02em;
+      color: @color-yellow;
+      .text-outline(3px, 1px, black);
     }
     p {
       margin: 6px 0 0;
@@ -159,7 +148,7 @@ body {
       &:focus {
         outline: none;
         border-color: var(--tool-accent);
-        box-shadow: 0 0 0 3px hsla(243, 75%, 63%, 0.25);
+        box-shadow: 0 0 0 3px var(--tool-accent-soft);
       }
     }
   }
@@ -247,6 +236,12 @@ body {
       height: auto;
       display: block;
       border-radius: var(--tool-radius-s);
+
+      // The library draws its own white backing rect; override it so the
+      // QR code's background matches the rest of the tool.
+      rect {
+        fill: var(--tool-surface);
+      }
     }
   }
 
@@ -279,9 +274,9 @@ body {
     }
 
     &.btn-primary {
-      background: var(--tool-accent);
-      border-color: var(--tool-accent);
-      color: var(--tool-accent-contrast);
+      background: var(--tool-highlight);
+      border-color: var(--tool-highlight);
+      color: var(--tool-highlight-contrast);
     }
   }
 
