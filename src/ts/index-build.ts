@@ -279,6 +279,18 @@ const createNewDateFields = async () => {
 }
 await createNewDateFields();
 
+const createOldDateRedirects = async () => {
+    const redirectHtml = await Bun.file('src/html/date-redirect.html').text();
+
+    for (let i = 0; i < dateEntries.length; i++) {
+        const entry = dateEntries[i];
+        const dataString = entry.dateString;    
+        const updatedRedirectHtml = redirectHtml.split('<!--DATE-->').join(dataString);
+        await Bun.write("docs/date-" + dataString + ".html", updatedRedirectHtml);
+    }
+}
+await createOldDateRedirects();
+
 const sitemapUrls = ["index.html"];
 dateEntries.forEach((entry) => {
     sitemapUrls.push(entry.url);
